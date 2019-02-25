@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Todo{% endblock %}
+{% block css %}
+{% endblock %}
 {% block content %}
     <table class="table">
     <thead>
@@ -23,7 +25,13 @@
             </a>
         </td>
         <td>
-            <a class="title" data-content="{{ todo.detail }}" href="{% url 'todo:todo-detail' todo.pk %}">{{ todo }}</a>
+            <a href="{% url 'todo:todo-detail' todo.pk %}">
+                {% if todo.detail %}
+                <span class="tooltipster" title="{{ todo.detail }}">{{ todo }}</span>
+                {% else %}
+                {{ todo }}
+                {% endif %}
+            </a>
         </td>
         <td class="seconds_left">
             {{ todo.seconds_left }}
@@ -54,6 +62,11 @@
 {% endblock %}
 {% block script %}
 <script>
+    $(document).ready(function() {
+        $('.tooltipster').tooltipster();
+    });
+</script>
+<script>
 var secondsLeft = $(".seconds_left");
 for(var i=0; i<secondsLeft.length; i++){
     let seconds = secondsLeft[i].innerHTML * 1000;
@@ -71,16 +84,6 @@ for(var i=0; i<secondsLeft.length; i++){
         else if (seconds < 3600 * 1000){
             secondsLeft[i].classList.add('text-warning');
         }
-    }
-}
-let base = $('.title');
-for(let i=0; i<base.length; i++){
-    if (base[i].getAttribute('data-content')){
-        $(base[i]).popover({
-            title: base[i].innerHTML,
-            content: base[i].getAttribute('data-content'),
-            trigger: 'hover',
-        });
     }
 }
 </script>
