@@ -11,7 +11,32 @@
 <script src="https://cdn.bootcss.com/fullcalendar/3.10.0/fullcalendar.min.js"></script>
 <script type="text/javascript">
 $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'listYear,month,basicWeek'
+      },
+    defaultView: 'basicWeek',
     contentHeight: 540,
+    eventLimit: true,
+    nowIndicator: true,
+    eventRender: function(eventObj, $el) {
+        if (eventObj.detail){
+            $el.popover({
+                title: eventObj.title,
+                content: eventObj.detail,
+                trigger: 'hover',
+                placement: 'top',
+            });
+        }
+    },
+    dayClick: function(date, jsEvent, view) {
+        today = new Date();
+        today -= 3600000 * 24;
+        if (date >= today){
+            window.location = "{% url 'admin:todo_todo_add' %}?date="+date.format();
+        }
+    },
     eventSources: [
         {
           url: '/api/event',

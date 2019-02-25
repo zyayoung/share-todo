@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from django.shortcuts import redirect, get_object_or_404
+from django.utils.datetime_safe import datetime
 
 
 class TodoAdmin(admin.ModelAdmin):
@@ -20,6 +21,27 @@ class TodoAdmin(admin.ModelAdmin):
         return super(TodoAdmin, self).formfield_for_foreignkey(
             db_field, request, **kwargs
         )
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name == 'deadline':
+            if request.GET.get('date'):
+                if 'T' in request.GET.get('date'):
+                    t = datetime.strptime(request.GET.get('date'), "%Y-%m-%dT%H:%M:%S")
+                    kwargs['initial'] = t
+                else:
+                    t = datetime.strptime(request.GET.get('date'), "%Y-%m-%d")
+                    t = datetime.strptime(
+                        '%d-%d-%dT23:59:59' % (t.year, t.month, t.day),
+                        '%Y-%m-%dT%H:%M:%S'
+                    )
+            else:
+                t = datetime.now()
+                t = datetime.strptime(
+                    '%d-%d-%dT23:59:59' % (t.year, t.month, t.day),
+                    '%Y-%m-%dT%H:%M:%S'
+                )
+            kwargs['initial'] = t
+        return super(TodoAdmin, self).formfield_for_dbfield(db_field, request, **kwargs)
 
 
 admin.site.site_header = "Share Todo"

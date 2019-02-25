@@ -23,8 +23,35 @@
         <th>State</th>
         <td>{{ todo.state }}</td>
     </tr>
+    <tr>
+        <th>Time Left</th>
+        <td class="seconds_left">
+            {{ todo.seconds_left }}
+        </td>
+    </tr>
     </table>
     <a href="{% url 'admin:todo_todo_change' todo.pk %}?next={{ request.path }}" class="btn btn-outline-primary">
         <i class="fa fa-edit"></i> Edit
     </a>
+{% endblock %}
+{% block script %}
+<script>
+var secondsLeft = $(".seconds_left");
+for(var i=0; i<secondsLeft.length; i++){
+    let seconds = secondsLeft[i].innerHTML * 1000;
+    let passed = false;
+    if(seconds < 0){
+        passed = true;
+        seconds = -seconds;
+    }
+    let time = new Date(seconds);
+    secondsLeft[i].innerHTML = (passed?'- ':'') + Math.floor(seconds/(1000*3600*24)) + " days " + time.getUTCHours()+':'+time.getUTCMinutes()+':'+time.getUTCSeconds();
+    if(passed){
+        secondsLeft[i].classList.add('text-danger');
+    }
+    else if (seconds < 3600 * 1000){
+        secondsLeft[i].classList.add('text-warning');
+    }
+}
+</script>
 {% endblock %}

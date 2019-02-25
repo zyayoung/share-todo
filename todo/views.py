@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, resolve_url
 from django.views import generic
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -61,15 +61,26 @@ def alt(request, pk):
 @login_required
 def event(request):
     events = []
-    fr = datetime.strptime(request.GET.get('start', ''), '%Y-%m-%d')
-    to = datetime.strptime(request.GET.get('end', ''), '%Y-%m-%d')
-    print(fr, to)
-    for todo in Todo.objects.filter(deadline__range=[fr, to]):
+    if request.GET.get('start') and request.GET.get('end'):
+        fr = request.GET.get('start')
+        if 'T' not in fr:
+            fr += 'T0:0:0'
+        fr = datetime.strptime(fr, '%Y-%m-%dT%H:%M:%S')
+        to = request.GET.get('end')
+        if 'T' not in to:
+            to += 'T0:0:0'
+        to = datetime.strptime(to, '%Y-%m-%dT%H:%M:%S')
+        todos = Todo.objects.filter(deadline__range=[fr, to])
+    else:
+        todos = Todo.objects.all()
+    for todo in todos:
         events.append({
             'title': todo.title,
-            'start': todo.deadline.strftime('%Y-%m-%d'),
-            'end': todo.deadline.strftime('%Y-%m-%d'),
+            'start': todo.deadline.strftime('%Y-%m-%dT%H:%M:%S'),
+            'end': todo.deadline.strftime('%Y-%m-%dT%H:%M:%S'),
             'color': '#eee' if todo.done else '#6cf',
-            'textColor': '#999' if todo.done else '#000'
+            'textColor': '#999' if todo.done else '#000',
+            'url': resolve_url('todo:todo-detail', todo.pk),
+            'detail': todo.detail,
         })
     return HttpResponse(json.dumps(events))

@@ -21,7 +21,7 @@
             </a>
         </td>
         <td>
-            <a href="{% url 'todo:todo-detail' todo.pk %}">{{ todo }}</a>
+            <a class="title" data-content="{{ todo.detail }}" href="{% url 'todo:todo-detail' todo.pk %}">{{ todo }}</a>
         </td>
         <td class="seconds_left">
             {{ todo.seconds_left }}
@@ -56,6 +56,16 @@ for(var i=0; i<secondsLeft.length; i++){
     }
     else if (seconds < 3600 * 1000){
         secondsLeft[i].classList.add('text-warning');
+    }
+}
+let base = $('.title');
+for(let i=0; i<base.length; i++){
+    if (base[i].getAttribute('data-content')){
+        $(base[i]).popover({
+            title: base[i].innerHTML,
+            content: base[i].getAttribute('data-content'),
+            trigger: 'hover',
+        });
     }
 }
 </script>
