@@ -26,4 +26,4 @@ class Todo(models.Model):
             return 'Exceeded'
 
     class Meta:
-        ordering = ['-deadline']
+        ordering = ['deadline']
