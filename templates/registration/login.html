@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">Login</h2>
+    <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+    {% if form.errors %}
+        <div class="alert alert-warning">{% for key, value in form.errors.items %}{{ value }}{% endfor %}</div>
+    {% endif %}
+    <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_username">Username:</label>
+        <input type="text" name="username" required="" class="form-control" maxlength="128" id="id_username">
+    </div>
+    <div class="form-group">
+        <label for="id_password">Password:</label>
+        <input type="password" name="password" required="" class="form-control" maxlength="256" id="id_password">
+    </div>
+    <input class="btn btn-outline-primary" type="submit" value="Login" />
+    </form>
+    </div>
+{% endblock %}

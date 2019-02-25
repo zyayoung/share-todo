@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block css %}
+<link href="https://cdn.bootcss.com/fullcalendar/3.10.0/fullcalendar.min.css" rel="stylesheet">
+{#<link href="https://cdn.bootcss.com/fullcalendar/3.10.0/fullcalendar.print.min.css" rel="stylesheet">#}
+{% endblock %}
+{% block content %}
+<div id="calendar"></div>
+{% endblock %}
+{% block script %}
+<script src="https://cdn.bootcss.com/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdn.bootcss.com/fullcalendar/3.10.0/fullcalendar.min.js"></script>
+<script type="text/javascript">
+$('#calendar').fullCalendar({
+    eventSources: [
+
+    // your event source
+    {
+      url: '/api/event',
+    }
+    ]
+
+});
+</script>
+{% endblock %}

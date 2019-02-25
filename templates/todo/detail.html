@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Todo{% endblock %}
+{% block content %}
+    <table class="table">
+    <tr>
+        <th>Title</th>
+        <td>{{ todo.title }}</td>
+    </tr>
+    <tr>
+        <th>Detail</th>
+        <td>{{ todo.detail }}</td>
+    </tr>
+    <tr>
+        <th>Deadline</th>
+        <td>{{ todo.deadline }}</td>
+    </tr>
+    </tr>
+    <tr>
+        <th>User</th>
+        <td>{{ todo.user }}</td>
+    </tr>
+    <tr>
+        <th>State</th>
+        <td>{{ todo.state }}</td>
+    </tr>
+    </table>
+    <a href="{% url 'admin:todo_todo_change' todo.pk %}?next={{ request.path }}" class="btn btn-outline-primary">
+        <i class="fa fa-edit"></i> Edit
+    </a>
+{% endblock %}
