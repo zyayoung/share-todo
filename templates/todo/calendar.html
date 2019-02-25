@@ -11,15 +11,12 @@
 <script src="https://cdn.bootcss.com/fullcalendar/3.10.0/fullcalendar.min.js"></script>
 <script type="text/javascript">
 $('#calendar').fullCalendar({
-    contentHeight: 600,
+    contentHeight: 540,
     eventSources: [
-
-    // your event source
-    {
-      url: '/api/event',
-    }
+        {
+          url: '/api/event',
+        }
     ]
-
 });
 </script>
 {% endblock %}

@@ -67,7 +67,7 @@ def event(request):
     for todo in Todo.objects.filter(deadline__range=[fr, to]):
         events.append({
             'title': todo.title,
-            'start': todo.time_add.strftime('%Y-%m-%d'),
+            'start': todo.deadline.strftime('%Y-%m-%d'),
             'end': todo.deadline.strftime('%Y-%m-%d'),
             'color': '#eee' if todo.done else '#6cf',
             'textColor': '#999' if todo.done else '#000'
