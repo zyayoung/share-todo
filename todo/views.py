@@ -13,7 +13,10 @@ class TodoListView(generic.ListView):
     context_object_name = 'todos'
 
     def get_queryset(self):
-        return Todo.objects.filter(done=False)
+        if self.request.GET.get('all'):
+            return Todo.objects.filter(done=False)
+        else:
+            return Todo.objects.filter(done=False, user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -26,7 +29,10 @@ class DoneListView(generic.ListView):
     context_object_name = 'todos'
 
     def get_queryset(self):
-        return Todo.objects.filter(done=True)
+        if self.request.GET.get('all'):
+            return Todo.objects.filter(done=True)
+        else:
+            return Todo.objects.filter(done=True, user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,12 +80,17 @@ def event(request):
     else:
         todos = Todo.objects.all()
     for todo in todos:
+        if todo.deadline.hour == 23 and todo.deadline.minute == 59:
+            ddl_str = todo.deadline.strftime('%Y-%m-%d')
+        else:
+            ddl_str = todo.deadline.strftime('%Y-%m-%dT%H:%M:%S')
         events.append({
             'title': todo.title,
-            'start': todo.deadline.strftime('%Y-%m-%dT%H:%M:%S'),
-            'end': todo.deadline.strftime('%Y-%m-%dT%H:%M:%S'),
-            'color': '#eee' if todo.done else '#6cf',
-            'textColor': '#999' if todo.done else '#000',
+            'start': ddl_str,
+            'end': ddl_str,
+            'color': '#eee' if todo.done else '#6cf' if todo.user == request.user else '#cdf',
+
+            'textColor': '#bbb' if todo.done else '#000',
             'url': resolve_url('todo:todo-detail', todo.pk),
             'detail': todo.detail,
         })

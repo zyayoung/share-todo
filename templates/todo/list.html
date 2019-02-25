@@ -6,7 +6,9 @@
     <th></th>
     <th>Title</th>
     <th>Time Left</th>
+    {% if request.GET.all %}
     <th>User</th>
+    {% endif %}
     </thead>
     <tbody>
     {% for todo in todos %}
@@ -26,9 +28,11 @@
         <td class="seconds_left">
             {{ todo.seconds_left }}
         </td>
+        {% if request.GET.all %}
         <td>
             {{ todo.user }}
         </td>
+        {% endif %}
         </tr>
     {% endfor %}
     </tbody>
@@ -36,6 +40,15 @@
     {% if todo %}
     <a href="{% url 'admin:todo_todo_add' %}" class="btn btn-outline-primary">
         <i class="fa fa-plus"></i> Add
+    </a>
+    {% endif %}
+    {% if not request.GET.all %}
+    <a href="{{ request.path }}?all=True" class="btn btn-outline-primary">
+        <i class="fa fa-eye"></i> All
+    </a>
+    {% else %}
+    <a href="{{ request.path }}" class="btn btn-outline-primary">
+        <i class="fa fa-eye-slash"></i> Hide
     </a>
     {% endif %}
 {% endblock %}
@@ -50,12 +63,14 @@ for(var i=0; i<secondsLeft.length; i++){
         seconds = -seconds;
     }
     let time = new Date(seconds);
-    secondsLeft[i].innerHTML = (passed?'- ':'') + Math.floor(seconds/(1000*3600*24)) + " days " + time.getUTCHours()+':'+time.getUTCMinutes()+':'+time.getUTCSeconds();
-    if(passed){
-        secondsLeft[i].classList.add('text-danger');
-    }
-    else if (seconds < 3600 * 1000){
-        secondsLeft[i].classList.add('text-warning');
+    secondsLeft[i].innerHTML = (passed?'- ':'') + Math.floor(seconds/(1000*3600*24)) + "d " + time.getUTCHours()+':'+time.getUTCMinutes();
+    if(!{{ todos.0.done }}){
+        if(passed){
+            secondsLeft[i].classList.add('text-danger');
+        }
+        else if (seconds < 3600 * 1000){
+            secondsLeft[i].classList.add('text-warning');
+        }
     }
 }
 let base = $('.title');

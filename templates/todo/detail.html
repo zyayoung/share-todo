@@ -46,11 +46,13 @@ for(var i=0; i<secondsLeft.length; i++){
     }
     let time = new Date(seconds);
     secondsLeft[i].innerHTML = (passed?'- ':'') + Math.floor(seconds/(1000*3600*24)) + " days " + time.getUTCHours()+':'+time.getUTCMinutes()+':'+time.getUTCSeconds();
-    if(passed){
-        secondsLeft[i].classList.add('text-danger');
-    }
-    else if (seconds < 3600 * 1000){
-        secondsLeft[i].classList.add('text-warning');
+    if(!{{ todo.done }}){
+        if(passed){
+            secondsLeft[i].classList.add('text-danger');
+        }
+        else if (seconds < 3600 * 1000){
+            secondsLeft[i].classList.add('text-warning');
+        }
     }
 }
 </script>
