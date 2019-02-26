@@ -80,10 +80,7 @@ def event(request):
     else:
         todos = Todo.objects.all()
     for todo in todos:
-        if todo.deadline.hour == 23 and todo.deadline.minute == 59:
-            ddl_str = todo.deadline.strftime('%Y-%m-%d')
-        else:
-            ddl_str = todo.deadline.strftime('%Y-%m-%dT%H:%M:%S')
+        ddl_str = todo.deadline.strftime('%Y-%m-%dT%H:%M:%S')
         events.append({
             'title': todo.title,
             'start': ddl_str,
