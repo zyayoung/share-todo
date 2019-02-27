@@ -18,7 +18,7 @@ $('#calendar').fullCalendar({
     },
     titleFormat: 'MMM YY',
     defaultView: 'month',
-    contentHeight: document.documentElement.clientHeight - 160,
+    contentHeight: Math.max(480, document.documentElement.clientHeight - 160),
     {#eventLimit: true,#}
     nowIndicator: true,
     eventRender: function(eventObj, $el) {
@@ -46,7 +46,7 @@ $('#calendar').fullCalendar({
     timeFormat: document.documentElement.clientWidth>414?'H':' ',
     windowResize: function(view) {
         $('#calendar').fullCalendar('option', 'timeFormat', document.documentElement.clientWidth>414?'H':' ');
-        $('#calendar').fullCalendar('option', 'contentHeight', document.documentElement.clientHeight - 160);
+        $('#calendar').fullCalendar('option', 'contentHeight', Math.max(480, document.documentElement.clientHeight - 160));
     }
 });
 </script>
