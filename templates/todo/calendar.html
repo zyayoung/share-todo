@@ -11,13 +11,14 @@
 <script src="https://cdn.bootcss.com/fullcalendar/3.10.0/fullcalendar.min.js"></script>
 <script type="text/javascript">
 $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
+    header: {
+        left: 'prev,next',
         center: 'title',
-        right: 'listYear,month,basicWeek'
-      },
+        right: 'month,basicWeek'
+    },
+    titleFormat: 'MMM YY',
     defaultView: 'month',
-    contentHeight: 600,
+    contentHeight: document.documentElement.clientHeight - 160,
     {#eventLimit: true,#}
     nowIndicator: true,
     eventRender: function(eventObj, $el) {
@@ -42,7 +43,11 @@ $('#calendar').fullCalendar({
           url: '/api/event',
         }
     ],
-    timeFormat: 'H'
+    timeFormat: document.documentElement.clientWidth>414?'H':' ',
+    windowResize: function(view) {
+        $('#calendar').fullCalendar('option', 'timeFormat', document.documentElement.clientWidth>414?'H':' ');
+        $('#calendar').fullCalendar('option', 'contentHeight', document.documentElement.clientHeight - 160);
+    }
 });
 </script>
 {% endblock %}
