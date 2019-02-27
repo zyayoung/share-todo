@@ -76,7 +76,7 @@ for(var i=0; i<secondsLeft.length; i++){
         seconds = -seconds;
     }
     let time = new Date(seconds);
-    secondsLeft[i].innerHTML = (passed?'- ':'') + Math.floor(seconds/(1000*3600*24)) + "d " + time.getUTCHours()+':'+time.getUTCMinutes();
+    secondsLeft[i].innerHTML = (passed?'- ':'') + Math.floor(seconds/(1000*3600*24)) + "d " + time.getUTCHours()+'h';
     if(!{{ todos.0.done }}){
         if(passed){
             secondsLeft[i].classList.add('text-danger');
