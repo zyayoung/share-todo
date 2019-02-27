@@ -38,6 +38,11 @@
                 <ul class="navbar-nav mr-auto">
                     {% block navbar %}
                     <li class="nav-item">
+                        <a href="{% url 'admin:todo_todo_add' %}" class="nav-link">
+                            Add
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{% url 'todo:todo-list' %}" class="nav-link">
                             Todo
                         </a>
