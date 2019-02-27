@@ -13,5 +13,5 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('alt/<int:pk>', views.alt, name='alt'),
     path('calendar/', login_required(views.CalendarView.as_view()), name='calendar'),
-    path('api/event/', views.event),
+    path('api/event', views.event),
 ]
